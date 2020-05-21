@@ -1,0 +1,40 @@
+German:
+  RunTask:
+    Title: '&c&oBitte Bestätige die Regeln mit &f/dsgvo!'
+    SubTitle: '&c&nSonst wird diese Nachricht &4immer &cwiederholt.'
+    FadeIn: 10
+    Stay: 10:
+    FadeOut: 10
+    Messages:
+    - &d===&c===&e===&7[&bMyHomeRules&7]&e===&c===&d===
+    - &bUm ein angenehmes Klima auf dem Server zu ermöglichen,
+    - &bmüssen gewisse Regeln eingehalten werden. &c/regeln~click@RUN_COMMAND@/rules~hover@SHOW_TEXT@German.Hover.Message.LineThree
+    - &bNeuigkeiten und Nachrichten kannst du per &c/discord~click@RUN_COMMAND@/discord~hover@SHOW_TEXT@German.Hover.Message.LineFour &enachlesen.
+    - &0-----------------------------------------------------
+    - &0.......... &c&o/dsgvo~click@RUN_COMMAND@/rules~hover@SHOW_TEXT@German.Hover.Message.LineSix &0..........
+    - &0-----------------------------------------------------
+  Hover:
+    Message:
+      LineThree: '&eKlicke hier um den Befehl &c/regeln &edirekt auszuführen.~!~&eDies leitet dich dann zu den eigentlichen Regeln weiter.'
+      LineFour: '&eKlicke hier für die Weiterleitung zum Discord.~!~&eDort kannst du alle Updates, Neuigkeiten und Disskusionen finden, und sogar über Themen abstimmen.'
+      LineSix: '&eKlicke hier zum Bestätigen der Regeln.'
+      Base: '&eKlicke hier zum Aufrufen der Regeln auf der Webseite.'
+  CmdRules:
+    Base:
+    - &eAlle Regeln findest du &c/regeln~click@RUN_COMMAND@/rules~hover@SHOW_TEXT@German.Hover.Message.Base
+    Info:
+      Next: '&e&nnächste Seite &e==>'
+      Past: '&e<== &nvorherige Seite'
+      accept: '&c/rules accept &f| Der Grundbefehl zum akzeptieren der Regeln'
+      info: '&c/rules info &f| Der Infobefehl'
+      reload: '&c/rules reload &f| Lädt die Yaml-Dateien und MySQL neu.'
+    Accept:
+      Accepting: '&6Du hast die Regeln akzeptiert! Noch viel Spaß auf dem Server.'
+      AlreadyAccepted: '&6Du hast die Regeln schon am %time% akzeptiert.'
+    Reload:
+      Success: '&aYaml-Dateien wurden neu geladen.'
+      Error: '&cEs wurde ein Fehler gefunden! Siehe Konsole!'
+    Revoke:
+      NoAccept: '&cDu hast die Regeln nicht akzeptiert. Somit kannst du sie auch nicht widerrufen!'
+      Warning: '&c&oAchtung! &r&cDurch das Widerrufen der Regeln, wirst du nicht nur vom Server gekickt, sondern die Betreiber des Servers behalten sich das Recht vor, all deine Ingame Wertgegenstände oder Ähnliches, zu löschen oder andersweitig zu verarbeiten. Du gibst somit alle Rechte dies bezüglich auf! Bitte bestätige mit &f/regeln widerrufen bestätigen&c.'
+      Kick: '&cDu hast die Regeln widerrufen. Damit hast du alle Rechte auf erspielte und gekaufte Gegenstände aufgegeben. &bWir wünschen dir trotzdem alles Gute auf deinem Lebensweg!'

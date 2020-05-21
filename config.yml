@@ -1,0 +1,27 @@
+Language: 'English'
+Prefix: '&7[&dMyHomeRules&7] &r'
+Mysql:
+  Status: false
+  Host: '127.0.0.1'
+  Port: 3306
+  DatabaseName: 'mydatabase'
+  SSLEnabled: false
+  AutoReconnect: true
+  VerifyServerCertificate: false
+  User: 'admin'
+  Password: 'not_0123456789'
+  TableI: 'MyHomeRulesPlayerData'
+CustomCommand: '/dsgvo'
+RunTaskTime: 5
+# => <origin+message>~click@SUGGEST_COMMAND@/blubb~hover@SHOW_TEXT@messagepath
+# => click@SUGGEST_COMMAND@/blubb
+# => hover@SHOW_TEXTt@textpath
+Identifier:
+  Click: '<click'
+  Hover: '<hover'
+  Book: '<book'
+Seperator:
+  BetweenFunction: '~'
+  WhithinFuction: '@'
+  Space: '+'
+  HoverNewLine: '~!~'
