@@ -134,25 +134,24 @@ public class ChatApi
 	
 	public static TextComponent generateTextComponent(String message)
 	{
-		MyHomeRules plugin = MyHomeRules.getPlugin();
 		String[] array = message.split(" ");
-		YamlConfiguration cfg = plugin.getYamlHandler().get();
+		YamlConfiguration cfg = MyHomeRules.getPlugin().getYamlHandler().get();
 		String idclick = cfg.getString("Identifier.Click");
 		String idhover = cfg.getString("Identifier.Hover");
-		String idbook = cfg.getString("Identifier.Book");
 		String sepb = cfg.getString("Seperator.BetweenFunction");
 		String sepw = cfg.getString("Seperator.WhithinFuction");
 		String sepspace = cfg.getString("Seperator.Space");
 		String sepnewline = cfg.getString("Seperator.HoverNewLine");
 		List<BaseComponent> list = new ArrayList<BaseComponent>();
 		TextComponent textcomponent = ChatApi.tc("");
+		String lastColor = null;
 		for(int i = 0; i < array.length; i++)
 		{
 			String word = array[i];
+			lastColor = getLastColor(lastColor, word);
 			//Word enthält Funktion
-			if(word.contains(idclick) || word.contains(idhover) || word.contains(idbook))
+			if(word.contains(idclick) || word.contains(idhover))
 			{
-				
 				if(word.contains(sepb))
 				{
 					String[] functionarray = word.split(sepb);
@@ -170,7 +169,7 @@ public class ChatApi
 					{
 						continue;
 					}
-					TextComponent tc = ChatApi.tctl(originmessage);
+					TextComponent tc = ChatApi.tctl(lastColor+originmessage);
 					for(String f : functionarray)
 					{
 						if(f.contains(idclick))
@@ -193,7 +192,7 @@ public class ChatApi
 							String hoveraction = function[1];
 							String hoverstringpath = function[2];
 							String hoverstring = ChatApi.tl(
-									plugin.getYamlHandler().getL().getString(hoverstringpath));
+									MyHomeRules.getPlugin().getYamlHandler().getL().getString(hoverstringpath));
 							ChatApi.hoverEvent(tc, HoverEvent.Action.valueOf(hoveraction),
 									hoverstring.split(sepnewline));
 						}
@@ -205,14 +204,40 @@ public class ChatApi
 				//Beinhalten keine Funktion
 				if(i+1 == array.length)
 				{
-					list.add(ChatApi.tctl(word));
+					list.add(ChatApi.tctl(lastColor+word));
 				} else
 				{
-					list.add(ChatApi.tctl(word+" "));
+					list.add(ChatApi.tctl(lastColor+word+" "));
 				}
 			}
 		}
 		textcomponent.setExtra(list);
 		return textcomponent;
+	}
+	
+	private static String getLastColor(String lastColor, String s)
+	{
+		String color = lastColor;
+		for(int i = s.length()-1; i >= 0; i--)
+		{
+			char c = s.charAt(i);
+			   if(c == '&' || c == '§')
+			   {
+				   if(i+1<s.length())
+				   {
+					   char d = s.charAt(i+1);
+					   if(d == '0' || d == '1' || d == '2' || d == '3' || d == '4' || d == '5' || d == '6'
+							   || d == '7' || d == '8' || d == '9' || d == 'a' || d == 'A' || d == 'b' || d == 'B'
+							   || d == 'c' || d == 'C' || d == 'd' || d == 'D' || d == 'e' || d == 'E'
+							   || d == 'f' || d == 'F' || d == 'k' || d == 'K' || d == 'm' || d == 'M'
+							   || d == 'n' || d == 'N' || d == 'l' || d == 'L' || d == 'o' || d == 'O'
+							   || d == 'r' || d == 'R')
+					   {
+						   color = "§"+Character.toString(d);
+					   }
+				   }
+			   }
+		}
+		return color;
 	}
 }

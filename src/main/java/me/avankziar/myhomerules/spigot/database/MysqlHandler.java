@@ -22,7 +22,7 @@ public class MysqlHandler
 	
 	public boolean loadMysqlHandler()
 	{
-		tableNameI = plugin.getYamlHandler().get().getString("Mysql.TableI");
+		tableNameI = plugin.getYamlHandler().get().getString("Mysql.TableNameI");
 		if(tableNameI == null)
 		{
 			return false;

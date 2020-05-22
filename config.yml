@@ -10,16 +10,17 @@ Mysql:
   VerifyServerCertificate: false
   User: 'admin'
   Password: 'not_0123456789'
-  TableI: 'MyHomeRulesPlayerData'
+  TableNameI: 'MyHomeRulesPlayerData'
 CustomCommand: '/dsgvo'
-RunTaskTime: 5
+RunTaskTimer: 1
+KickEndTimer: 1
+HowOftenSendMessageBeforeKick: 4 
 # => <origin+message>~click@SUGGEST_COMMAND@/blubb~hover@SHOW_TEXT@messagepath
 # => click@SUGGEST_COMMAND@/blubb
 # => hover@SHOW_TEXTt@textpath
 Identifier:
-  Click: '<click'
-  Hover: '<hover'
-  Book: '<book'
+  Click: 'click'
+  Hover: 'hover'
 Seperator:
   BetweenFunction: '~'
   WhithinFuction: '@'

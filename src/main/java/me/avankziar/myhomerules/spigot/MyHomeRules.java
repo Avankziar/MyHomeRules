@@ -37,13 +37,14 @@ public class MyHomeRules extends JavaPlugin
 	
 	public void onEnable()
 	{
+		plugin = this;
 		log = getLogger();
 		yamlHandler = new YamlHandler(this);
 		rulesarguments = new HashMap<String, CommandModule>();
 		if (yamlHandler.get().getBoolean("Mysql.Status", false) == true)
 		{
-			mysqlSetup = new MysqlSetup(this);
 			mysqlHandler = new MysqlHandler(this);
+			mysqlSetup = new MysqlSetup(this);
 		} else
 		{
 			log.severe("MySQL is not set in the Plugin " + pluginName + "!");

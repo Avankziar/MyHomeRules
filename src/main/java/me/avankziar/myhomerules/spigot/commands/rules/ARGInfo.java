@@ -50,14 +50,17 @@ public class ARGInfo extends CommandModule
 		{
 			lastpage = true;
 		}
-		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+".CmdRules.Info.Headline")));
+		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+path+"Info.Headline")));
 		for(String argument : MyHomeRules.rulesarguments.keySet())
 		{
-			if(count >= start && count <= end)
+			if(argument.equals(MyHomeRules.rulesarguments.get(argument).argument))
 			{
-				sendInfo(player, MyHomeRules.rulesarguments.get(argument));
-			}
-			count++;
+				if(count >= start && count <= end)
+				{
+					sendInfo(player, MyHomeRules.rulesarguments.get(argument));
+				}
+				count++;
+			}			
 		}
 		pastNext(player, page, lastpage, language, path);
 	}
