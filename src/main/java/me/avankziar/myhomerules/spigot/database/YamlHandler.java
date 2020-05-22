@@ -162,7 +162,7 @@ public class YamlHandler
 			}
 		}
 		hindi = new File(directory.getPath(), "hindi.yml");
-		if(!german.exists()) 
+		if(!hindi.exists()) 
 		{
 			MyHomeRules.log.info("Create hindi.yml...");
 			try
