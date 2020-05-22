@@ -3,7 +3,7 @@ package main.java.me.avankziar.myhomerules.spigot.assistence;
 public class StringValues
 {
 	final public static String 
-	PATH_RULES = ".CmdRules.",
+	PATH_RULES = "CmdRules.",
 	
 	ARG_RULES_ACCEPT = "accept",
 	ARG_RULES_ACCEPT_ALIAS = "akzeptieren",

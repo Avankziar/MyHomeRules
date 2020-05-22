@@ -16,8 +16,7 @@ public class CommandHelper
 
 	public void rules(Player player)
 	{
-		String language = plugin.getYamlHandler().getLanguages();
-		for(String message : plugin.getYamlHandler().getL().getStringList(language+".CmdRules.Base"))
+		for(String message : plugin.getYamlHandler().getL().getStringList("CmdRules.Base"))
 		{
 			player.spigot().sendMessage(ChatApi.generateTextComponent(message));
 		}

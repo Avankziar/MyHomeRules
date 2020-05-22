@@ -1,6 +1,5 @@
 package main.java.me.avankziar.myhomerules.spigot;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
@@ -133,25 +132,5 @@ public class MyHomeRules extends JavaPlugin
 			return false;
 		}
 		return true;
-	}
-	
-	public boolean existMethod(Class<?> externclass, String method)
-	{
-	    try 
-	    {
-	    	Method[] mtds = externclass.getMethods();
-	    	for(Method methods : mtds)
-	    	{
-	    		if(methods.getName().equalsIgnoreCase(method))
-	    		{
-	    	    	//SimpleChatChannels.log.info("Method "+method+" in Class "+externclass.getName()+" loaded!");
-	    	    	return true;
-	    		}
-	    	}
-	    	return false;
-	    } catch (Exception e) 
-	    {
-	    	return false;
-	    }
 	}
 }

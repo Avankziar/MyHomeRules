@@ -31,7 +31,6 @@ public class ARGInfo extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		String language = plugin.getYamlHandler().getLanguages();
 		String path = StringValues.PATH_RULES;
 		int page = 0;
 		if(args.length == 2)
@@ -50,7 +49,7 @@ public class ARGInfo extends CommandModule
 		{
 			lastpage = true;
 		}
-		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+path+"Info.Headline")));
+		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(path+"Info.Headline")));
 		for(String argument : MyHomeRules.rulesarguments.keySet())
 		{
 			if(argument.equals(MyHomeRules.rulesarguments.get(argument).argument))
@@ -62,21 +61,20 @@ public class ARGInfo extends CommandModule
 				count++;
 			}			
 		}
-		pastNext(player, page, lastpage, language, path);
+		pastNext(player, page, lastpage, path);
 	}
 	
 	private void sendInfo(Player player, CommandModule module)
 	{
-		String language = plugin.getYamlHandler().getLanguages();
 		if(player.hasPermission(module.permission))
 		{
 			player.spigot().sendMessage(ChatApi.clickEvent(
-					plugin.getYamlHandler().getL().getString(language+".CmdRules.Info."+module.argument),
+					plugin.getYamlHandler().getL().getString("CmdRules.Info."+module.argument),
 					ClickEvent.Action.SUGGEST_COMMAND, module.commandSuggest));
 		}
 	}
 	
-	private void pastNext(Player player, int page, boolean lastpage, String language, String path)
+	private void pastNext(Player player, int page, boolean lastpage,String path)
 	{
 		if(page==0 && lastpage)
 		{
@@ -89,7 +87,7 @@ public class ARGInfo extends CommandModule
 		if(page!=0)
 		{
 			TextComponent msg2 = ChatApi.tctl(
-					plugin.getYamlHandler().getL().getString(language+path+"Info.Past"));
+					plugin.getYamlHandler().getL().getString(path+"Info.Past"));
 			String cmd = "/rules info "+String.valueOf(j);
 			msg2.setClickEvent( new ClickEvent(ClickEvent.Action.RUN_COMMAND, cmd));
 			pages.add(msg2);
@@ -97,7 +95,7 @@ public class ARGInfo extends CommandModule
 		if(!lastpage)
 		{
 			TextComponent msg1 = ChatApi.tctl(
-					plugin.getYamlHandler().getL().getString(language+path+"Info.Next"));
+					plugin.getYamlHandler().getL().getString(path+"Info.Next"));
 			String cmd = "/rules info "+String.valueOf(i);
 			msg1.setClickEvent( new ClickEvent(ClickEvent.Action.RUN_COMMAND, cmd));
 			if(pages.size()==1)

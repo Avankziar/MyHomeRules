@@ -27,7 +27,6 @@ public class ARGAccept extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		String language = plugin.getYamlHandler().getLanguages();
 		String path = StringValues.PATH_RULES;
 		RulePlayer rp = RulePlayer.getRulePlayer(player.getUniqueId());
 		if(rp == null)
@@ -35,10 +34,10 @@ public class ARGAccept extends CommandModule
 			rp = new RulePlayer(player.getUniqueId().toString(), player.getName(), LocalDateTime.now());
 			plugin.getMysqlHandler().create(rp);
 			RulePlayer.addList(rp);
-			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getL().getString(language+path+"Accept.Accepting")));
+			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getL().getString(path+"Accept.Accepting")));
 		} else
 		{
-			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getL().getString(language+path+"Accept.AlreadyAccepted")
+			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getL().getString(path+"Accept.AlreadyAccepted")
 					.replace("%time%", RulePlayer.serialised(rp.getDateTime()))));
 		}
 		return;

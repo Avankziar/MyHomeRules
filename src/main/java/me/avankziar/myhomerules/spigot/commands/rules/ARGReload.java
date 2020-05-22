@@ -24,17 +24,16 @@ public class ARGReload extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		String language = plugin.getYamlHandler().getLanguages();
 		String path = StringValues.PATH_RULES;
 		if(plugin.reload())
 		{
 			///Yaml Datein wurden neugeladen.
-			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+path+"Reload.Success")));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(path+"Reload.Success")));
 			return;
 		} else
 		{
 			///Es wurde ein Fehler gefunden! Siehe Konsole!
-			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+path+"Reload.Error")));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(path+"Reload.Error")));
 			return;
 		}
 	}

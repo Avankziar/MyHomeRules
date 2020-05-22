@@ -21,7 +21,6 @@ public class MultipleCommandExecutor implements CommandExecutor
 	public boolean onCommand(CommandSender sender, Command cmd, String lable, String[] args) 
 	{
 		// Checks if the label is one of yours.
-		String language = plugin.getYamlHandler().getLanguages();
 		if (cmd.getName().equalsIgnoreCase("rules")) 
 		{		
 			if (!(sender instanceof Player)) 
@@ -49,7 +48,7 @@ public class MultipleCommandExecutor implements CommandExecutor
 					{
 						///Deine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!
 						player.spigot().sendMessage(ChatApi.clickEvent(
-								plugin.getYamlHandler().getL().getString(language+".InputIsWrong"),
+								plugin.getYamlHandler().getL().getString("InputIsWrong"),
 								ClickEvent.Action.RUN_COMMAND, "/rules info"));
 						return false;
 					}
@@ -57,14 +56,14 @@ public class MultipleCommandExecutor implements CommandExecutor
 				{
 					///Du hast dafür keine Rechte!
 					player.spigot().sendMessage(ChatApi.tctl(
-							plugin.getYamlHandler().getL().getString(language+".NoPermission")));
+							plugin.getYamlHandler().getL().getString("NoPermission")));
 					return false;
 				}
 			} else 
 			{
 				///Deine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!
 				player.spigot().sendMessage(ChatApi.clickEvent(
-						plugin.getYamlHandler().getL().getString(language+".InputIsWrong"),
+						plugin.getYamlHandler().getL().getString("InputIsWrong"),
 						ClickEvent.Action.RUN_COMMAND, "/rules info"));
 				return false;
 			}

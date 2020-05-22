@@ -50,13 +50,12 @@ public class BackgroundTask
 						count.put(player, 1);
 					}
 					YamlConfiguration l = plugin.getYamlHandler().getL();
-					String language = plugin.getYamlHandler().getLanguages();
-					player.sendTitle(ChatApi.tl(l.getString(language+".RunTask.Title")),
-							ChatApi.tl(l.getString(language+".RunTask.SubTitle")),
-							l.getInt(language+".RunTask.FadeIn"), 
-							l.getInt(language+".RunTask.Stay"),
-							l.getInt(language+".RunTask.FadeOut"));
-					for(String message : l.getStringList(language+".RunTask.Messages"))
+					player.sendTitle(ChatApi.tl(l.getString("RunTask.Title")),
+							ChatApi.tl(l.getString("RunTask.SubTitle")),
+							l.getInt("RunTask.FadeIn"), 
+							l.getInt("RunTask.Stay"),
+							l.getInt("RunTask.FadeOut"));
+					for(String message : l.getStringList("RunTask.Messages"))
 					{
 						player.spigot().sendMessage(ChatApi.generateTextComponent(message));
 					}
@@ -79,8 +78,7 @@ public class BackgroundTask
 			@Override
 			public void run()
 			{
-				player.kickPlayer(ChatApi.tl(plugin.getYamlHandler().getL().getString(
-						plugin.getYamlHandler().getLanguages()+".RunTask.Kick")));
+				player.kickPlayer(ChatApi.tl(plugin.getYamlHandler().getL().getString("RunTask.Kick")));
 			}
 		}.runTaskLater(plugin, 20L*60*plugin.getYamlHandler().get().getInt("KickEndTimer"));
 	}

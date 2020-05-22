@@ -25,7 +25,6 @@ public class ARGRevoke extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		String language = plugin.getYamlHandler().getLanguages();
 		String path = StringValues.PATH_RULES;
 		String confirm = "no";
 		if(args.length == 2)
@@ -35,17 +34,17 @@ public class ARGRevoke extends CommandModule
 		RulePlayer rp = RulePlayer.getRulePlayer(player.getUniqueId());
 		if(rp == null)
 		{
-			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getL().getString(language+path+"Revoke.NoAccept")));
+			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getL().getString(path+"Revoke.NoAccept")));
 			return;
 		}
 		if(confirm.equalsIgnoreCase("confirm") || confirm.equalsIgnoreCase("bestätigen"))
 		{
-			player.kickPlayer(ChatApi.tl(plugin.getYamlHandler().getL().getString(language+path+"Revoke.Kick")));
+			player.kickPlayer(ChatApi.tl(plugin.getYamlHandler().getL().getString(path+"Revoke.Kick")));
 			plugin.getMysqlHandler().deleteData("`player_uuid` = ?", player.getUniqueId().toString());
 			RulePlayer.removeList(rp);
 		} else
 		{
-			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getL().getString(language+path+"Revoke.Warning")));
+			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getL().getString(path+"Revoke.Warning")));
 		}
 		return;
 	}
