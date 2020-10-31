@@ -54,6 +54,7 @@ public class ChatApi
 		return msg;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static TextComponent hoverEvent(TextComponent msg, HoverEvent.Action haction, String hover)
 	{
 		String sepnewline = "~!~";
@@ -79,6 +80,7 @@ public class ChatApi
 		return msg;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static TextComponent hoverEvent(String text, HoverEvent.Action haction, String hover)
 	{
 		String sepnewline = "~!~";
@@ -122,6 +124,7 @@ public class ChatApi
 		return msg;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static TextComponent apiChatItem(String text, ClickEvent.Action caction, String cmd,
 			String itemStringFromReflection)
 	{
@@ -345,7 +348,7 @@ public class ChatApi
 								continue;
 							}
 							String clickaction = function[1];
-							String clickstring = function[2];
+							String clickstring = function[2].replace(sepspace, " ");
 							ChatApi.clickEvent(tc, ClickEvent.Action.valueOf(clickaction), clickstring);
 						} else if(f.contains(idhover))
 						{
