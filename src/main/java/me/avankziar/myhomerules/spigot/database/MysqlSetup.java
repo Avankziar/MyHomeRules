@@ -41,20 +41,20 @@ public class MysqlSetup
        	 	//Load Drivers
             Class.forName("com.mysql.jdbc.Driver");
             Properties properties = new Properties();
-            properties.setProperty("user", plugin.getYamlHandler().get().getString("Mysql.User"));
-            properties.setProperty("password", plugin.getYamlHandler().get().getString("Mysql.Password"));
+            properties.setProperty("user", plugin.getYamlHandler().getConfig().getString("Mysql.User"));
+            properties.setProperty("password", plugin.getYamlHandler().getConfig().getString("Mysql.Password"));
             properties.setProperty("autoReconnect", 
-            		plugin.getYamlHandler().get().getBoolean("Mysql.AutoReconnect", true) + "");
+            		plugin.getYamlHandler().getConfig().getBoolean("Mysql.AutoReconnect", true) + "");
             properties.setProperty("verifyServerCertificate", 
-            		plugin.getYamlHandler().get().getBoolean("Mysql.VerifyServerCertificate", false) + "");
+            		plugin.getYamlHandler().getConfig().getBoolean("Mysql.VerifyServerCertificate", false) + "");
             properties.setProperty("useSSL", 
-            		plugin.getYamlHandler().get().getBoolean("Mysql.SSLEnabled", false) + "");
+            		plugin.getYamlHandler().getConfig().getBoolean("Mysql.SSLEnabled", false) + "");
             properties.setProperty("requireSSL", 
-            		plugin.getYamlHandler().get().getBoolean("Mysql.SSLEnabled", false) + "");
+            		plugin.getYamlHandler().getConfig().getBoolean("Mysql.SSLEnabled", false) + "");
             //Connect to database
-            conn = DriverManager.getConnection("jdbc:mysql://" + plugin.getYamlHandler().get().getString("Mysql.Host") 
-            		+ ":" + plugin.getYamlHandler().get().getInt("Mysql.Port", 3306) + "/" 
-            		+ plugin.getYamlHandler().get().getString("Mysql.DatabaseName"), properties);
+            conn = DriverManager.getConnection("jdbc:mysql://" + plugin.getYamlHandler().getConfig().getString("Mysql.Host") 
+            		+ ":" + plugin.getYamlHandler().getConfig().getInt("Mysql.Port", 3306) + "/" 
+            		+ plugin.getYamlHandler().getConfig().getString("Mysql.DatabaseName"), properties);
            
           } catch (ClassNotFoundException e) 
 		{
@@ -147,20 +147,20 @@ public class MysqlSetup
 		    MyHomeRules.log.info("Attempting to establish a connection to the MySQL server!");
             Class.forName("com.mysql.jdbc.Driver");
             Properties properties = new Properties();
-            properties.setProperty("user", plugin.getYamlHandler().get().getString("Mysql.User"));
-            properties.setProperty("password", plugin.getYamlHandler().get().getString("Mysql.Password"));
+            properties.setProperty("user", plugin.getYamlHandler().getConfig().getString("Mysql.User"));
+            properties.setProperty("password", plugin.getYamlHandler().getConfig().getString("Mysql.Password"));
             properties.setProperty("autoReconnect", 
-            		plugin.getYamlHandler().get().getBoolean("Mysql.AutoReconnect", true) + "");
+            		plugin.getYamlHandler().getConfig().getBoolean("Mysql.AutoReconnect", true) + "");
             properties.setProperty("verifyServerCertificate", 
-            		plugin.getYamlHandler().get().getBoolean("Mysql.VerifyServerCertificate", false) + "");
+            		plugin.getYamlHandler().getConfig().getBoolean("Mysql.VerifyServerCertificate", false) + "");
             properties.setProperty("useSSL", 
-            		plugin.getYamlHandler().get().getBoolean("Mysql.SSLEnabled", false) + "");
+            		plugin.getYamlHandler().getConfig().getBoolean("Mysql.SSLEnabled", false) + "");
             properties.setProperty("requireSSL", 
-            		plugin.getYamlHandler().get().getBoolean("Mysql.SSLEnabled", false) + "");
+            		plugin.getYamlHandler().getConfig().getBoolean("Mysql.SSLEnabled", false) + "");
             //Connect to database
-            conn = DriverManager.getConnection("jdbc:mysql://" + plugin.getYamlHandler().get().getString("Mysql.Host") 
-            		+ ":" + plugin.getYamlHandler().get().getInt("Mysql.Port", 3306) + "/" 
-            		+ plugin.getYamlHandler().get().getString("Mysql.DatabaseName"), properties);
+            conn = DriverManager.getConnection("jdbc:mysql://" + plugin.getYamlHandler().getConfig().getString("Mysql.Host") 
+            		+ ":" + plugin.getYamlHandler().getConfig().getInt("Mysql.Port", 3306) + "/" 
+            		+ plugin.getYamlHandler().getConfig().getString("Mysql.DatabaseName"), properties);
 		    end = System.currentTimeMillis();
 		    MyHomeRules.log.info("Connection to MySQL server established!");
 		    MyHomeRules.log.info("Connection took " + ((end - start)) + "ms!");

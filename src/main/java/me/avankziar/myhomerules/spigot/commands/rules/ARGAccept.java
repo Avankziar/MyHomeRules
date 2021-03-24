@@ -1,25 +1,25 @@
 package main.java.me.avankziar.myhomerules.spigot.commands.rules;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.myhomerules.spigot.MyHomeRules;
 import main.java.me.avankziar.myhomerules.spigot.assistence.ChatApi;
-import main.java.me.avankziar.myhomerules.spigot.assistence.StringValues;
-import main.java.me.avankziar.myhomerules.spigot.commands.CommandModule;
+import main.java.me.avankziar.myhomerules.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.myhomerules.spigot.commands.tree.ArgumentModule;
 import main.java.me.avankziar.myhomerules.spigot.objects.RulePlayer;
 
-public class ARGAccept extends CommandModule
+public class ARGAccept extends ArgumentModule
 {
 	private MyHomeRules plugin;
 	
-	public ARGAccept(MyHomeRules plugin)
+	public ARGAccept(MyHomeRules plugin, ArgumentConstructor argumentConstructor)
 	{
-		super(StringValues.ARG_RULES_ACCEPT,StringValues.PERM_CMD_RULES_ACCEPT,
-				MyHomeRules.rulesarguments,1,1,StringValues.ARG_RULES_ACCEPT_ALIAS,
-				StringValues.RULES_SUGGEST_ACCEPT);
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -27,19 +27,44 @@ public class ARGAccept extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		String path = StringValues.PATH_RULES;
+		String path = "CmdRules.";
 		RulePlayer rp = RulePlayer.getRulePlayer(player.getUniqueId());
 		if(rp == null)
 		{
 			rp = new RulePlayer(player.getUniqueId().toString(), player.getName(), LocalDateTime.now());
 			plugin.getMysqlHandler().create(rp);
 			RulePlayer.addList(rp);
-			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getL().getString(path+"Accept.Accepting")));
+			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString(path+"Accept.Accepting")));
 		} else
 		{
-			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getL().getString(path+"Accept.AlreadyAccepted")
+			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString(path+"Accept.AlreadyAccepted")
 					.replace("%time%", RulePlayer.serialised(rp.getDateTime()))));
+			return;
 		}
-		return;
+		if(!plugin.getYamlHandler().getConfig().getBoolean("Use.CommandByAccept", false))
+		{
+			return;
+		}
+		List<String> commands = plugin.getYamlHandler().getConfig().getStringList("CommandsBy.Accept");
+		for(String s : commands)
+		{
+			if(!s.contains("<->"))
+			{
+				continue;
+			}
+			String[] split = s.split("<->");
+			if(split.length != 2)
+			{
+				continue;
+			}
+			if(split[0].equals("player"))
+			{
+				//Ohne / bei commands
+				Bukkit.dispatchCommand(player, split[1].replace("%player%", player.getName()));
+			} else if(split[0].equals("console"))
+			{
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), split[1].replace("%player%", player.getName()));
+			}
+		}
 	}
 }

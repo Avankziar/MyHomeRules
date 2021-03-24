@@ -187,7 +187,10 @@ public class ChatApi
     {
         if (supportsHex()) 
         {
-            return ChatColor.of((String)hex).toString();
+        	if(hex.length()>7)
+        	{
+        		return ChatColor.of((String)hex).toString();
+        	}
         }
         Color awtColor = Color.decode(hex);
         ChatColor nearestColor = ChatColor.WHITE;
@@ -304,7 +307,7 @@ public class ChatApi
 	public static TextComponent generateTextComponent(String message)
 	{
 		String[] array = message.split(" ");
-		YamlConfiguration cfg = MyHomeRules.getPlugin().getYamlHandler().get();
+		YamlConfiguration cfg = MyHomeRules.getPlugin().getYamlHandler().getConfig();
 		String idclick = cfg.getString("Identifier.Click");
 		String idhover = cfg.getString("Identifier.Hover");
 		String sepb = cfg.getString("Seperator.BetweenFunction");
@@ -360,7 +363,7 @@ public class ChatApi
 							String hoveraction = function[1];
 							String hoverstringpath = function[2];
 							String hoverstring = ChatApi.tl(
-									MyHomeRules.getPlugin().getYamlHandler().getL().getString(hoverstringpath));
+									MyHomeRules.getPlugin().getYamlHandler().getLang().getString(hoverstringpath));
 							hoverEvent(tc, HoverEvent.Action.valueOf(hoveraction),
 									hoverstring);
 						}

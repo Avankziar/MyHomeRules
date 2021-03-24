@@ -1,0 +1,7 @@
+Future Featurs:
+- Beim akzeptieren der Regen, Befehle ausführebar machen mit Spielerreplacer. Beim Wiederrufen auch ausführbarmachen. Per Config einstellbarmachen
+  ob überhaupt ausgeführt wird.
+  
+Build 4 =======================================================================================================================
+- CommandTree und YamlManager eingefügt
+- Beim akzeptieren und wiederrufen, können nun Befehle ausgeführt werden.
