@@ -1,16 +1,13 @@
 package main.java.me.avankziar.myhomerules.spigot.listener;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import main.java.me.avankziar.myhomerules.spigot.MyHomeRules;
-import main.java.me.avankziar.myhomerules.spigot.assistence.ChatApi;
 import main.java.me.avankziar.myhomerules.spigot.objects.RulePlayer;
 
 public class PlayerListener implements Listener
@@ -22,23 +19,9 @@ public class PlayerListener implements Listener
 		this.plugin = plugin;
 	}
 	
-	private void debug(Player player, String s)
-	{
-		boolean bo = false;
-		if(bo)
-		{
-			if(player != null)
-			{
-				player.spigot().sendMessage(ChatApi.tctl(s));
-			}
-			System.out.println(s);
-		}
-	}
-	
 	@EventHandler (priority = EventPriority.LOW)
 	public void onJoin(PlayerJoinEvent event)
 	{
-		debug(event.getPlayer(),"PJE 1");
 		new BukkitRunnable()
 		{
 			@Override
@@ -51,27 +34,36 @@ public class PlayerListener implements Listener
 				String playeruuid = event.getPlayer().getUniqueId().toString();
 				if(!plugin.getMysqlHandler().exist("`player_uuid` = ?", playeruuid))
 				{
-					cancel();
-					debug(event.getPlayer(),"PJE 2 uuid: "+playeruuid);
-					plugin.getBackgroundTask().playerMustAcceptTask(event.getPlayer());
+					boolean simpleSite = plugin.getYamlHandler().getConfig().getBoolean("RunTask.SimpleSite");
+					if(simpleSite)
+					{
+						plugin.getBackgroundTask().playerMustAcceptTaskSimpleSite(event.getPlayer());
+					} else
+					{
+						plugin.getBackgroundTask().playerMustAcceptTaskMultipleSite(event.getPlayer());
+					}
 				} else
 				{
-					cancel();
-					debug(event.getPlayer(),"PJE 3");
-					RulePlayer.addList((RulePlayer) plugin.getMysqlHandler().getData("`player_uuid` = ?", playeruuid));
+					RulePlayer rp = RulePlayer.getRulePlayer(event.getPlayer());
+					if(rp != null)
+					{
+						if(rp.isRevoked() || rp.isDeleted())
+						{
+							plugin.getMysqlHandler().deleteData("`player_uuid` = ?", playeruuid);
+							boolean simpleSite = plugin.getYamlHandler().getConfig().getBoolean("RunTask.SimpleSite");
+							if(simpleSite)
+							{
+								plugin.getBackgroundTask().playerMustAcceptTaskSimpleSite(event.getPlayer());
+							} else
+							{
+								plugin.getBackgroundTask().playerMustAcceptTaskMultipleSite(event.getPlayer());
+							}
+							return;
+						}
+					}
 				}
 			}
-		}.runTaskTimer(plugin, 0L, 2L);
-	}
-	
-	@EventHandler
-	public void onQuit(PlayerQuitEvent event)
-	{
-		RulePlayer rp = RulePlayer.getRulePlayer(event.getPlayer().getUniqueId());
-		if(rp != null)
-		{
-			RulePlayer.removeList(rp);
-		}
+		}.runTaskLater(plugin, 20L);
 	}
 	
 	@EventHandler

@@ -91,12 +91,14 @@ public class MysqlHandler
 			try 
 			{
 				String sql = "INSERT INTO `" + plugin.getMysqlHandler().tableNameI 
-						+ "`(`player_uuid`, `player_name`, `datetime`) " 
-						+ "VALUES(?, ?, ?)";
+						+ "`(`player_uuid`, `player_name`, `datetime`, `revoked`, `deleted`) " 
+						+ "VALUES(?, ?, ?, ?, ?)";
 				preparedStatement = conn.prepareStatement(sql);
 				preparedStatement.setString(1, ep.getPlayerUUID());
 		        preparedStatement.setString(2, ep.getPlayerName());
 		        preparedStatement.setString(3, RulePlayer.serialised(ep.getDateTime()));
+		        preparedStatement.setBoolean(4, ep.isRevoked());
+		        preparedStatement.setBoolean(5, ep.isDeleted());
 		        
 		        preparedStatement.executeUpdate();
 		        return true;
@@ -139,13 +141,15 @@ public class MysqlHandler
 			try 
 			{
 				String data = "UPDATE `" + plugin.getMysqlHandler().tableNameI
-						+ "` SET `player_uuid` = ?, `player_name` = ?, `datetime` = ?" 
+						+ "` SET `player_uuid` = ?, `player_name` = ?, `datetime` = ?, `revoked` = ?, `deleted` = ?" 
 						+ " WHERE "+whereColumn;
 				preparedStatement = conn.prepareStatement(data);
 				preparedStatement.setString(1, ep.getPlayerUUID());
 		        preparedStatement.setString(2, ep.getPlayerName());
 		        preparedStatement.setString(3, RulePlayer.serialised(ep.getDateTime()));
-		        int i = 4;
+		        preparedStatement.setBoolean(4, ep.isRevoked());
+		        preparedStatement.setBoolean(5, ep.isDeleted());
+		        int i = 6;
 		        for(Object o : whereObject)
 		        {
 		        	preparedStatement.setObject(i, o);
@@ -196,7 +200,9 @@ public class MysqlHandler
 		        	return new RulePlayer(
 		        			result.getString("player_uuid"),
 		        			result.getString("player_name"),
-		        			RulePlayer.deserialised(result.getString("datetime")));
+		        			RulePlayer.deserialised(result.getString("datetime")),
+		        			result.getBoolean("revoked"),
+		        			result.getBoolean("deleted"));
 		        }
 		    } catch (SQLException e) 
 			{
@@ -374,7 +380,9 @@ public class MysqlHandler
 		        	RulePlayer ep = new RulePlayer(
 		        			result.getString("player_uuid"),
 		        			result.getString("player_name"),
-		        			RulePlayer.deserialised(result.getString("datetime")));
+		        			RulePlayer.deserialised(result.getString("datetime")),
+		        			result.getBoolean("revoked"),
+		        			result.getBoolean("deleted"));
 		        	list.add(ep);
 		        }
 		        return list;
@@ -422,7 +430,9 @@ public class MysqlHandler
 		        	RulePlayer ep = new RulePlayer(
 		        			result.getString("player_uuid"),
 		        			result.getString("player_name"),
-		        			RulePlayer.deserialised(result.getString("datetime")));
+		        			RulePlayer.deserialised(result.getString("datetime")),
+		        			result.getBoolean("revoked"),
+		        			result.getBoolean("deleted"));
 		        	list.add(ep);
 		        }
 		        return list;

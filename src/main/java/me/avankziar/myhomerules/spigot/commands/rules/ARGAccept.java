@@ -28,12 +28,11 @@ public class ARGAccept extends ArgumentModule
 	{
 		Player player = (Player) sender;
 		String path = "CmdRules.";
-		RulePlayer rp = RulePlayer.getRulePlayer(player.getUniqueId());
+		RulePlayer rp = RulePlayer.getRulePlayer(player);
 		if(rp == null)
 		{
-			rp = new RulePlayer(player.getUniqueId().toString(), player.getName(), LocalDateTime.now());
+			rp = new RulePlayer(player.getUniqueId().toString(), player.getName(), LocalDateTime.now(), false, false);
 			plugin.getMysqlHandler().create(rp);
-			RulePlayer.addList(rp);
 			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString(path+"Accept.Accepting")));
 		} else
 		{

@@ -1,6 +1,20 @@
 Future Featurs:
-- Beim akzeptieren der Regen, Befehle ausführebar machen mit Spielerreplacer. Beim Wiederrufen auch ausführbarmachen. Per Config einstellbarmachen
-  ob überhaupt ausgeführt wird.
+  
+Build 5 ========================================================================================================================
+- +Eine seitenbasierte Ansicht für die Joinnachrichten, die per Configboolean eingeschaltet werden kann.
+- +Spieler haben nun einen boolean für das Wiederrufen der Regeln. Der beim Wiederrufen auf true gesetzt wird. Dann wird dieser Spieler
+   in der liste angezeigt.
+- +Spieler können nun als "gelöscht" getrackt werden per Command.
+- +neue Befehle:
+    - +/rule [Zahl] | Zeigt pro Seite die Serverregeln an.
+    - +/rules delete <Spielernamen> | Trackt den Spieler als "aus dem System gelöscht".
+    - +/rules site [Zahl] | Springt zu der angegeben Seite, im Seitenbasierten Modus.
+    - +/rules todeletelist | Zeigt alle Spieler an, welche die Regeln wiederrufen haben.
+- +Support Metrics
+- +Support InterfaceHub
+- +Mysql wurde erweitert:
+   ALTER TABLE `YourDateTable` ADD `revoked` TINYINT(1) NOT NULL DEFAULT '0' AFTER `datetime` 
+   AND `deleted` TINYINT(1) NOT NULL DEFAULT '0' AFTER `revoked`;
   
 Build 4 =======================================================================================================================
 - CommandTree und YamlManager eingefügt

@@ -14,15 +14,20 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import main.java.me.avankziar.myhomerules.spigot.assistence.BackgroundTask;
+import main.java.me.avankziar.myhomerules.spigot.commands.RuleCommandExecutor;
 import main.java.me.avankziar.myhomerules.spigot.commands.RulesCommandExecutor;
 import main.java.me.avankziar.myhomerules.spigot.commands.TabCompletion;
 import main.java.me.avankziar.myhomerules.spigot.commands.rules.ARGAccept;
+import main.java.me.avankziar.myhomerules.spigot.commands.rules.ARGDelete;
 import main.java.me.avankziar.myhomerules.spigot.commands.rules.ARGInfo;
 import main.java.me.avankziar.myhomerules.spigot.commands.rules.ARGRevoke;
+import main.java.me.avankziar.myhomerules.spigot.commands.rules.ARGSite;
+import main.java.me.avankziar.myhomerules.spigot.commands.rules.ARGToDeleteList;
 import main.java.me.avankziar.myhomerules.spigot.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.myhomerules.spigot.commands.tree.ArgumentModule;
 import main.java.me.avankziar.myhomerules.spigot.commands.tree.BaseConstructor;
@@ -31,6 +36,7 @@ import main.java.me.avankziar.myhomerules.spigot.database.MysqlHandler;
 import main.java.me.avankziar.myhomerules.spigot.database.MysqlSetup;
 import main.java.me.avankziar.myhomerules.spigot.database.YamlHandler;
 import main.java.me.avankziar.myhomerules.spigot.database.YamlManager;
+import main.java.me.avankziar.myhomerules.spigot.interfacehub.ServerRuleAPI;
 import main.java.me.avankziar.myhomerules.spigot.listener.PlayerListener;
 import main.java.me.avankziar.myhomerules.spigot.metrics.Metrics;
 
@@ -44,17 +50,21 @@ public class MyHomeRules extends JavaPlugin
 	private static MysqlHandler mysqlHandler;
 	private static MyHomeRules plugin;
 	private static BackgroundTask backgroundTask;
+	public static ServerRuleAPI srapi;
 	
 	private ArrayList<CommandConstructor> commandTree;
 	private ArrayList<BaseConstructor> helpList;
 	private LinkedHashMap<String, ArgumentModule> argumentMap;
 	public static String baseCommandI = "rules"; //Pfad angabe + ürspungliches Commandname
+	public static String baseCommandII = "rule";
 	
 	public static String baseCommandIName = ""; //CustomCommand name
+	public static String baseCommandIIName = "";
 	
 	public static String infoCommandPath = "CmdRules";
 	public static String infoCommand = "/"; //InfoComamnd
 	public static ArgumentConstructor ruleaccepting = null;
+	public static LinkedHashMap<String, String> map = new LinkedHashMap<>();
 	
 	public void onEnable()
 	{
@@ -85,6 +95,7 @@ public class MyHomeRules extends JavaPlugin
 			return;
 		}
 		backgroundTask = new BackgroundTask(this);
+		setupServerRules();
 		setupStrings();
 		setupCommandTree();
 		ListenerSetup();
@@ -102,6 +113,7 @@ public class MyHomeRules extends JavaPlugin
 	{
 		//Hier baseCommands
 		baseCommandIName = plugin.getYamlHandler().getCom().getString(baseCommandI+".Name");
+		baseCommandIIName = plugin.getYamlHandler().getCom().getString(baseCommandII+".Name");
 		
 		//Zuletzt infoCommand deklarieren
 		infoCommand += baseCommandIName;
@@ -111,22 +123,37 @@ public class MyHomeRules extends JavaPlugin
 	{	
 		ArgumentConstructor accept = new ArgumentConstructor(baseCommandI+"_accept", 0, 0, 0, false, null);
 		ruleaccepting = accept;
+		ArgumentConstructor delete = new ArgumentConstructor(baseCommandI+"_delete", 0, 1, 1, false, null);
+		map.put("DELETE", delete.getCommandString());
 		ArgumentConstructor info = new ArgumentConstructor(baseCommandI+"_info", 0, 0, 1, false, null);
 		ArgumentConstructor revoke = new ArgumentConstructor(baseCommandI+"_revoke", 0, 0, 1, false, null);
+		ArgumentConstructor site = new ArgumentConstructor(baseCommandI+"_site", 0, 1, 1, false, null);
+		ArgumentConstructor todeletelist = new ArgumentConstructor(baseCommandI+"_todeletelist", 0, 0, 0, false, null);
 		
 		CommandConstructor rules = new CommandConstructor(baseCommandI, false,
-				accept, info, revoke);
+				accept, delete, info, revoke, site, todeletelist);
 		
 		registerCommand(rules.getPath(), rules.getName());
 		getCommand(rules.getName()).setExecutor(new RulesCommandExecutor(plugin, rules));
 		getCommand(rules.getName()).setTabCompleter(new TabCompletion(plugin));
 		
-		addingHelps(rules,
-						accept, info, revoke);
+		CommandConstructor rule = new CommandConstructor(baseCommandII, false);
+		
+		registerCommand(rule.getPath(), rule.getName());
+		getCommand(rule.getName()).setExecutor(new RuleCommandExecutor(plugin, rule));
+		getCommand(rule.getName()).setTabCompleter(new TabCompletion(plugin));
+		
+		
+		addingHelps(rule,
+					rules,
+						accept, delete, info, revoke, site, todeletelist);
 		
 		new ARGAccept(plugin, accept);
+		new ARGDelete(plugin, delete);
 		new ARGInfo(plugin, info);
 		new ARGRevoke(plugin, revoke);
+		new ARGSite(plugin, site);
+		new ARGToDeleteList(plugin, todeletelist);
 	}
 	
 	public void ListenerSetup()
@@ -308,5 +335,20 @@ public class MyHomeRules extends JavaPlugin
 	{
 		int pluginId = 10791;
         new Metrics(this, pluginId);
+	}
+	
+	private void setupServerRules()
+	{      
+        if (plugin.getServer().getPluginManager().isPluginEnabled("InterfaceHub")) 
+		{
+			srapi = new ServerRuleAPI(this);
+            plugin.getServer().getServicesManager().register(
+            		main.java.me.avankziar.interfacehub.spigot.serverrules.ServerRules.class,
+            		srapi,
+            		this,
+                    ServicePriority.Normal);
+            log.info(pluginName + " detected InterfaceHub. Hooking!");
+            return;
+        }
 	}
 }

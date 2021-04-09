@@ -2,70 +2,36 @@ package main.java.me.avankziar.myhomerules.spigot.objects;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.UUID;
+
+import org.bukkit.OfflinePlayer;
+
+import main.java.me.avankziar.myhomerules.spigot.MyHomeRules;
 
 public class RulePlayer
 {
 	private String playerUUID;
 	private String playerName;
 	private LocalDateTime dateTime;
+	private boolean revoked;
+	private boolean deleted;
 	
-	public static ArrayList<RulePlayer> allRulePlayer = new ArrayList<>();
-	
-	public RulePlayer(String playerUUID, String playerName, LocalDateTime dateTime)
+	public RulePlayer(String playerUUID, String playerName, LocalDateTime dateTime, boolean revoked, boolean deleted)
 	{
 		setPlayerUUID(playerUUID);
 		setPlayerName(playerName);
 		setDateTime(dateTime);
+		setRevoked(revoked);
+		setDeleted(deleted);
 	}
 	
-	public static RulePlayer getRulePlayer(UUID uuid)
+	public static RulePlayer getRulePlayer(OfflinePlayer player)
 	{
-		RulePlayer rp = null;
-		for(RulePlayer r : allRulePlayer)
-		{
-			if(r.getPlayerUUID().equals(uuid.toString()))
-			{
-				rp = r;
-				break;
-			}
-		}
-		return rp;
+		return (RulePlayer) MyHomeRules.getPlugin().getMysqlHandler().getData("`player_uuid` = ?", player.getUniqueId().toString());
 	}
 	
-	public static RulePlayer getRulePlayer(String name)
+	public static RulePlayer getRulePlayer(String playername)
 	{
-		RulePlayer rp = null;
-		for(RulePlayer r : allRulePlayer)
-		{
-			if(r.getPlayerName().equals(name))
-			{
-				rp = r;
-				break;
-			}
-		}
-		return rp;
-	}
-	
-	public static void addList(RulePlayer player)
-	{
-		allRulePlayer.add(player);
-	}
-	
-	public static void removeList(RulePlayer player)
-	{
-		RulePlayer rp = null;
-		for(RulePlayer r : allRulePlayer)
-		{
-			if(r.getPlayerUUID().equals(player.getPlayerUUID()))
-			{
-				rp = r;
-				break;
-			}
-		}
-		allRulePlayer.remove(rp);
-		rp = null;
+		return (RulePlayer) MyHomeRules.getPlugin().getMysqlHandler().getData("`player_name` = ?", playername);
 	}
 	
 	public static LocalDateTime deserialised(String datetime)
@@ -143,6 +109,26 @@ public class RulePlayer
 	public void setDateTime(LocalDateTime dateTime)
 	{
 		this.dateTime = dateTime;
+	}
+
+	public boolean isRevoked()
+	{
+		return revoked;
+	}
+
+	public void setRevoked(boolean revoked)
+	{
+		this.revoked = revoked;
+	}
+
+	public boolean isDeleted()
+	{
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted)
+	{
+		this.deleted = deleted;
 	}
 
 }

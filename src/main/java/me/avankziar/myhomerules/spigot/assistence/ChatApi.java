@@ -304,7 +304,7 @@ public class ChatApi
         return supportsHex;
     }
 	
-	public static TextComponent generateTextComponent(String message)
+	public static TextComponent generateTextComponent(String message, boolean lang)
 	{
 		String[] array = message.split(" ");
 		YamlConfiguration cfg = MyHomeRules.getPlugin().getYamlHandler().getConfig();
@@ -362,8 +362,16 @@ public class ChatApi
 							}
 							String hoveraction = function[1];
 							String hoverstringpath = function[2];
-							String hoverstring = ChatApi.tl(
-									MyHomeRules.getPlugin().getYamlHandler().getLang().getString(hoverstringpath));
+							String hoverstring = "";
+							if(lang)
+							{
+								ChatApi.tl(
+										MyHomeRules.getPlugin().getYamlHandler().getLang().getString(hoverstringpath));
+							} else
+							{
+								ChatApi.tl(
+										MyHomeRules.getPlugin().getYamlHandler().getMpS().getString(hoverstringpath));
+							}
 							hoverEvent(tc, HoverEvent.Action.valueOf(hoveraction),
 									hoverstring);
 						}

@@ -131,7 +131,7 @@ public class RulesCommandExecutor implements CommandExecutor
 	{
 		for(String message : plugin.getYamlHandler().getLang().getStringList("CmdRules.Base"))
 		{
-			player.spigot().sendMessage(ChatApi.generateTextComponent(message));
+			player.spigot().sendMessage(ChatApi.generateTextComponent(message, true));
 		}
 	}
 	

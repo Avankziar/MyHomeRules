@@ -26,6 +26,12 @@ public class YamlHandler
 	private String languages;
 	private File language = null;
 	private YamlConfiguration lang = new YamlConfiguration();
+	
+	private File multipleSite = null;
+	private YamlConfiguration mps = new YamlConfiguration();
+	
+	private File rules = null;
+	private YamlConfiguration rul = new YamlConfiguration();
 
 	public YamlHandler(MyHomeRules plugin)
 	{
@@ -46,6 +52,16 @@ public class YamlHandler
 	public YamlConfiguration getLang()
 	{
 		return lang;
+	}
+	
+	public YamlConfiguration getMpS()
+	{
+		return mps;
+	}
+	
+	public YamlConfiguration getRul()
+	{
+		return rul;
 	}
 	
 	private boolean loadYamlTask(File file, YamlConfiguration yaml)
@@ -209,7 +225,12 @@ public class YamlHandler
 		 * Here a example to create multiple flatfile for one purpose.
 		 * This example is been using for inventory-guis.
 		 */
-		if(!mkdirGUIs())
+		if(!mkdirMpS())
+		{
+			return false;
+		}
+		
+		if(!mkdirRules())
 		{
 			return false;
 		}
@@ -253,9 +274,59 @@ public class YamlHandler
 		return true;
 	}
 	
-	private boolean mkdirGUIs()
+	private boolean mkdirMpS()
 	{
-		
+		String languageString = plugin.getYamlManager().getLanguageType().toString().toLowerCase();
+		File directory = new File(plugin.getDataFolder()+"/MultipleSite/");
+		if(!directory.exists())
+		{
+			directory.mkdir();
+		}
+		multipleSite = new File(directory.getPath(), languageString+"-mps.yml");
+		if(!multipleSite.exists()) 
+		{
+			MyHomeRules.log.info("Create %lang%.yml...".replace("%lang%", languageString+"-mps"));
+			try
+			{
+				FileUtils.copyToFile(plugin.getResource("default.yml"), multipleSite);
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		if(!loadYamlTask(multipleSite, mps))
+		{
+			return false;
+		}
+		writeFile(multipleSite, mps, plugin.getYamlManager().getMultipleSiteKey());
+		return true;
+	}
+	
+	private boolean mkdirRules()
+	{
+		String languageString = plugin.getYamlManager().getLanguageType().toString().toLowerCase();
+		File directory = new File(plugin.getDataFolder()+"/Rules/");
+		if(!directory.exists())
+		{
+			directory.mkdir();
+		}
+		rules = new File(directory.getPath(), languageString+"-rules.yml");
+		if(!rules.exists()) 
+		{
+			MyHomeRules.log.info("Create %lang%.yml...".replace("%lang%", languageString+"-rules"));
+			try
+			{
+				FileUtils.copyToFile(plugin.getResource("default.yml"), rules);
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		if(!loadYamlTask(rules, rul))
+		{
+			return false;
+		}
+		writeFile(rules, rul, plugin.getYamlManager().getRulesKey());
 		return true;
 	}
 }

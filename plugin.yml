@@ -1,6 +1,6 @@
 name: MyHomeRules
 main: main.java.me.avankziar.myhomerules.spigot.MyHomeRules
-version: 4
+version: 5
 author: Avankziar
 api-version: 1.16
 description: A Rules accepting Plugin

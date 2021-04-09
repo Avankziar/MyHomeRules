@@ -32,7 +32,7 @@ public class ARGRevoke extends ArgumentModule
 		{
 			confirm = args[1];
 		}
-		RulePlayer rp = RulePlayer.getRulePlayer(player.getUniqueId());
+		RulePlayer rp = RulePlayer.getRulePlayer(player);
 		if(rp == null)
 		{
 			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString(path+"Revoke.NoAccept")));
@@ -40,8 +40,8 @@ public class ARGRevoke extends ArgumentModule
 		}
 		if(confirm.equalsIgnoreCase("confirm") || confirm.equalsIgnoreCase("bestätigen"))
 		{
-			plugin.getMysqlHandler().deleteData("`player_uuid` = ?", player.getUniqueId().toString());
-			RulePlayer.removeList(rp);
+			rp.setRevoked(true);
+			plugin.getMysqlHandler().updateData(rp, "`player_uuid` = ?", rp.getPlayerUUID());
 			if(plugin.getYamlHandler().getConfig().getBoolean("Use.CommandByRevoke", false))
 			{
 				List<String> commands = plugin.getYamlHandler().getConfig().getStringList("CommandsBy.Revoke");

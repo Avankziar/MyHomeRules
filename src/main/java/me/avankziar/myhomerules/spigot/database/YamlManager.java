@@ -19,12 +19,16 @@ public class YamlManager
 	private static LinkedHashMap<String, Language> configKeys = new LinkedHashMap<>();
 	private static LinkedHashMap<String, Language> commandsKeys = new LinkedHashMap<>();
 	private static LinkedHashMap<String, Language> languageKeys = new LinkedHashMap<>();
+	private static LinkedHashMap<String, Language> multipleSiteKeys = new LinkedHashMap<>();
+	private static LinkedHashMap<String, Language> rulesKeys = new LinkedHashMap<>();
 	
 	public YamlManager()
 	{
 		initConfig();
 		initCommands();
 		initLanguage();
+		initMultipleSite();
+		initRules();
 	}
 	
 	public ISO639_2B getLanguageType()
@@ -55,6 +59,16 @@ public class YamlManager
 	public LinkedHashMap<String, Language> getLanguageKey()
 	{
 		return languageKeys;
+	}
+	
+	public LinkedHashMap<String, Language> getMultipleSiteKey()
+	{
+		return multipleSiteKeys;
+	}
+	
+	public LinkedHashMap<String, Language> getRulesKey()
+	{
+		return rulesKeys;
 	}
 	
 	/*
@@ -139,9 +153,12 @@ public class YamlManager
 		configKeys.put("RunTaskTimer"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				1}));
-		configKeys.put("KickEndTimer"
+		configKeys.put("KickEndTimerSimpleSite"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				1}));
+		configKeys.put("KickEndTimerMultipleSite"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				5}));
 		configKeys.put("HowOftenSendMessageBeforeKick"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				4}));
@@ -163,6 +180,16 @@ public class YamlManager
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"player<->default test %player%",
 				"console<->default test %player%"}));
+		
+		configKeys.put("RunTask.SimpleSite",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						true,
+						true}));
+		
+		configKeys.put("Rules.RuleSeperator",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"x",
+						"x"}));
 		
 		configKeys.put("Identifier.Click"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
@@ -188,16 +215,24 @@ public class YamlManager
 	public void initCommands()
 	{
 		//comBypass();
+		commandsInput("rule", "rule", "rule.cmd.rule", 
+				"/rule", "/rule ",
+				"&c/rule &f| Zeigt pro Seite 10 ServerRegeln an.",
+				"&c/rule &f| Displays 10 server rules per page.");
 		String path = "rules";
 		commandsInput(path, "rules", "rules.cmd.rules", 
 				"/rules", "/rules ",
 				"&c/rules &f| Zeigt die >Akzeptiere die Regeln< Seite an.",
 				"&c/rules &f| Shows the >Accept the rules< site.");
-		String basePermission = "rules.cmd.";
+		String basePermission = "rules.cmd";
 		argumentInput(path+"_accept", "accept", basePermission,
 				"/rules accept", "/rules accept ",
 				"&c/rules accept &f| Akzeptiert die Regeln",
 				"&c/rules accpet &f| Accept the rules.");
+		argumentInput(path+"_delete", "delete", basePermission,
+				"/rules delete <playername>", "/rules delete ",
+				"&c/rules delete <Spielernamen> &f| Stellt den User als >gelöscht< dar.",
+				"&c/rules delete <playername> &f| Represents the user as >deleted<.");
 		argumentInput(path+"_info", "info", basePermission,
 				"/rules info", "/rules info ",
 				"&c/rules info <Zahl> &f| Infobefehl",
@@ -206,6 +241,14 @@ public class YamlManager
 				"/rules revoke", "/rules revoke ",
 				"&c/rules revoke &f| Wiederruft die Akzeptierung.",
 				"&c/rules revoke &f| Revoke the accept of the rules.");
+		argumentInput(path+"_site", "site", basePermission,
+				"/rules site [number]", "/rules site ",
+				"&c/rules site [Seitenzahl] &f| Zeigt die Seite der multiblen Regelseiten an.",
+				"&c/rules site [number] &f| Displays the page of multiple rule pages.");
+		argumentInput(path+"_todeletelist", "todeletelist", basePermission,
+				"/rules todeletelist", "/rules todeletelist ",
+				"&c/rules todeletelist &f| Listet alle Spieler auf, welche die Regeln wiederrufen haben.",
+				"&c/rules todeletelist &f| Lists all players who have revoked the rules.");
 	}
 	
 	/*private void comBypass() //INFO:ComBypass
@@ -266,14 +309,18 @@ public class YamlManager
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&cDeine Eingabe ist fehlerhaft! Klicke hier auf den Text, um weitere Infos zu bekommen!",
 						"&cYour input is incorrect! Click here on the text to get more information!"}));
+		languageKeys.put("NoIFH",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&cDas Plugin InterfaceHub ist nicht installiert!",
+						"&cThe InterfaceHub plugin is not installed!"}));
 		languageKeys.put("NoPermission",
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&cDu hast dafür keine Rechte!",
 						"&cYou have no rights!"}));
 		languageKeys.put("NoPlayerExist",
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&cDer Spieler ist nicht online oder existiert nicht!",
-						"&cThe player is not online or does not exist!"}));
+						"&cDer Spieler existiert nicht!",
+						"&cThe player does not exist!"}));
 		languageKeys.put("NoNumber",
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&cDas Argument &f%arg% &cmuss eine ganze Zahl sein.",
@@ -302,7 +349,7 @@ public class YamlManager
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						10,
 						10}));
-		languageKeys.put("RunTask.Messages",
+		languageKeys.put("RunTask.SimpleSite.Messages",
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"§d======§c======§e======§7[§bMyHome&4Rules§7]§e======§c======§d======",
 						"§bUm ein angenehmes Klima auf dem Server zu ermöglichen,",
@@ -358,6 +405,10 @@ public class YamlManager
 						"§bvvv",
 						"§eAll rules you will find §chere~click@OPEN_URL@https://de.wikipedia.org/wiki/Regel_(Richtlinie)~hover@SHOW_TEXT@Hover.Message.Base",
 						"§b^^^"}));
+		languageKeys.put("CmdRule.Line",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&e===&c%number%&f: &r%rulename%&e====",
+						"&e===&c%number%&f: &r%rulename%&e===="}));
 		languageKeys.put("CmdRules.BaseInfo.Headline",
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&e==========&7[&bMyHome&4Rules&7]&e==========",
@@ -378,6 +429,14 @@ public class YamlManager
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&eDu hast die Regeln & DSGVO schon am &6%time% &eakzeptiert.",
 						"&eYou have already accepted the rules & DSGVO on &6%time%."}));
+		languageKeys.put("CmdRules.Delete.PlayerHasNotRevoke",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&cDer Spieler hat die Regeln nicht wiederrufen.",
+						"&cThe player has not revoked the rules."}));
+		languageKeys.put("CmdRules.Delete.ThePlayerIsConsideredDeleted",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&eDer Spieler gilt nun als gelöscht.",
+						"&eThe player is now considered deleted."}));
 		languageKeys.put("CmdRules.Revoke.NoAccept",
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&cDu hast die Regeln & DSGVO nicht akzeptiert. Somit kannst du sie auch nicht widerrufen!",
@@ -390,10 +449,100 @@ public class YamlManager
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&cDu hast die Regeln & DSGVO widerrufen. Damit hast du alle Rechte auf erspielte und gekaufte Gegenstände aufgegeben. &bWir wünschen dir trotzdem alles Gute auf deinem Lebensweg!",
 						"&cYou have revoked the rules & DSGVO. This means that you have given up all rights to earned and purchased items. &bWe wish you all the best on your path through life anyway!"}));
+		languageKeys.put("CmdRules.Site.PageNotAvailable",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&cDiese Seite ist nicht vorhanden!",
+						"&cThis page does not exist!"}));
+		languageKeys.put("CmdRules.ToDeleteList.Headline",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&e=====&bSpieler welche die Regeln wiederrufen haben&e=====",
+						"&e=====&bPlayers who have revoked the rules&e====="}));
+		languageKeys.put("CmdRules.ToDeleteList.NoPlayerHasRevoke",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&cKein Spieler hat in letzter Zeit, die Regeln wiederrufen.",
+						"&cNo player has recently revoked the rules."}));
+		languageKeys.put("CmdRules.ToDeleteList.Hover",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&eKlicke hier, um den Spieler als &7>&egelöscht&7< &ezu setzten.",
+						"&eClick here to set the player as &7>&deleted&7<&e."}));
 		
 		/*languageKeys.put(""
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 				"",
 				""}))*/
+	}
+	public void initMultipleSite() //INFO:MultipleSite
+	{
+		multipleSiteKeys.put("1.Message",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"§d======§c======§e======§7[§bMyHome&4Rules§7]§e======§c======§d======",
+						"§bUm ein angenehmes Klima auf dem Server zu ermöglichen,",
+						"§bmüssen gewisse Regeln eingehalten werden. §c/regeln~click@RUN_COMMAND@/rules~hover@SHOW_TEXT@1.Hover.Message.LineThree",
+						"§bDie DSGVO Richtlinien findest du unter §c/dsgvolink~click@RUN_COMMAND@/dsgvolink~hover@SHOW_TEXT@1.Hover.Message.LineTwo",
+						"§bNeuigkeiten und Nachrichten kannst du per §c/forum~click@RUN_COMMAND@/forum~hover@SHOW_TEXT@1.Hover.Message.LineFour §bnachlesen.",
+						"§2-----------------------------------------------------",
+						"§0.",
+						"§6=====§2Klick §2hier§6======>>> §4§l§o/dsgvo~click@RUN_COMMAND@/dsgvo~hover@SHOW_TEXT@1.Hover.Message.LineSix §6<<<======§2Klick §2hier§6=====",
+						"§0.",
+						"§2-----------------------------------------------------",
+						"§enächste+Seite+=>~click@RUN_COMMAND@/rules+site+2~hover@SHOW_TEXT@1.Hover.Command.Next",
+						
+						"§d======§c======§e======§7[§bMyHome&4Rules§7]§e======§c======§d======",
+						"§bTo enable a pleasant climate on the server,",
+						"§bcertain rules must be observed. §c/regeln~click@RUN_COMMAND@/rules~hover@SHOW_TEXT@1.Hover.Message.LineThree",
+						"§bThe DSGVO guidelines can be found at §c/dsgvolink~click@RUN_COMMAND@/dsgvolink~hover@1.SHOW_TEXT@Hover.Message.LineTwo",
+						"§bYou can get news and updates via §c/forum~click@RUN_COMMAND@/forum~hover@SHOW_TEXT@1.Hover.Message.LineFour §b.",
+						"§2-----------------------------------------------------",
+						" ",
+						"§6=====§2Click §2here§6======>>> §4§l§o/dsgvo~click@RUN_COMMAND@/dsgvo~hover@SHOW_TEXT@1.Hover.Message.LineSix §6<<<======§2Click §2here§6=====",
+						" ",
+						"§2-----------------------------------------------------",
+						"§enext+site+=>~click@RUN_COMMAND@/rules+site+2~hover@SHOW_TEXT@1.Hover.Command.Next"}));
+		multipleSiteKeys.put("1.Hover.Message.LineTwo",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&eKlicke hier um den Befehl &c/dsgvolink &edirekt auszuführen.~!~&eDieses leitet dich dann zu den DSGVO Richtlinien weiter.",
+						"&eClick here to execute the command &c/dsgvolink &edirectly.~!~&e This will take you to the DSGVO guidelines."}));
+		multipleSiteKeys.put("1.Hover.Message.LineThree",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&eKlicke hier um den Befehl &c/regeln &edirekt auszuführen.~!~&eDieses leitet dich dann zu den eigentlichen Regeln weiter.",
+						"&eClick here to execute the command &c/rules &edirectly.~!~&eThis will redirect you to the actual rules."}));
+		multipleSiteKeys.put("1.Hover.Message.LineFour",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&eKlicke hier für die Weiterleitung zum Forum.~!~&eDort kannst du alle Updates, Neuigkeiten und~!~&eDisskusionen finden, und sogar über Themen abstimmen.",
+						"&eClick here to be redirected to the forum.~!~&There you can find all updates, news and~!~&discussions, and even vote on topics."}));
+		multipleSiteKeys.put("1.Hover.Message.LineSix",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&eKlicke hier zum Bestätigen der Regeln.",
+						"&eClick here to confirm the rules."}));
+		multipleSiteKeys.put("1.Hover.Message.Base",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&eKlicke hier zum Aufrufen der Regeln auf der Webseite.",
+						"&eClick here to view the rules on the website."}));
+		multipleSiteKeys.put("1.Hover.Command.Next",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&eKlicke hier zum wechseln zur nächsten Seite.",
+						"&eClick here to go to the next page."}));
+		multipleSiteKeys.put("1.Hover.Command.Past",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&eKlicke hier zum wechseln zur vorherigen Seite.",
+						"&eClick here to go to the past page."}));
+	}
+	
+	public void initRules() //INFO:Rules
+	{
+		rulesKeys.put("1.Number",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"1",
+						"1"}));
+		rulesKeys.put("1.Name",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"§9Seid freundlich zueinander",
+						"§9Be kind to each other"}));
+		rulesKeys.put("1.Lines",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"§eKeine Beleidigungen.",
+						"§6Keine Anfeindungen.",
+						"§eNo insults.",
+						"§6No hostility."}));
 	}
 }
