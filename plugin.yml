@@ -5,3 +5,4 @@ author: Avankziar
 api-version: 1.16
 description: A Rules accepting Plugin
 website: https://www.spigotmc.org/resources/my-home-rules.79165/
+softdepend: [InterfaceHub]
