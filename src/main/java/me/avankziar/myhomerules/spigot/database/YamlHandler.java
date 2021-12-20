@@ -2,6 +2,8 @@ package main.java.me.avankziar.myhomerules.spigot.database;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
@@ -9,7 +11,6 @@ import java.util.List;
 
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.libs.org.apache.commons.io.FileUtils;
 
 import main.java.me.avankziar.myhomerules.spigot.MyHomeRules;
 import main.java.me.avankziar.myhomerules.spigot.database.Language.ISO639_2B;
@@ -64,7 +65,7 @@ public class YamlHandler
 		return rul;
 	}
 	
-	private boolean loadYamlTask(File file, YamlConfiguration yaml)
+	private YamlConfiguration loadYamlTask(File file, YamlConfiguration yaml)
 	{
 		try 
 		{
@@ -75,9 +76,8 @@ public class YamlHandler
 					"Could not load the %file% file! You need to regenerate the %file%! Error: ".replace("%file%", file.getName())
 					+ e.getMessage());
 			e.printStackTrace();
-			return false;
 		}
-		return true;
+		return yaml;
 	}
 	
 	private boolean writeFile(File file, YamlConfiguration yml, LinkedHashMap<String, Language> keyMap)
@@ -144,12 +144,12 @@ public class YamlHandler
 		if(!config.exists()) 
 		{
 			MyHomeRules.log.info("Create config.yml...");
-			try
+			try(InputStream in = plugin.getResource("default.yml"))
 			{
 				/*
 				 * If config.yml dont exist in the main directory, than create config.yml as empty file
 				 */
-				FileUtils.copyToFile(plugin.getResource("default.yml"), config);
+				Files.copy(in, config.toPath());
 			} catch (IOException e)
 			{
 				e.printStackTrace();
@@ -158,10 +158,11 @@ public class YamlHandler
 		/*
 		 * Load the config.yml
 		 */
-		if(!loadYamlTask(config, cfg))
-		{
-			return false;
-		}
+		cfg = loadYamlTask(config, cfg);
+        if(cfg == null)
+        {
+        	return false;
+        }
 		/*
 		 * Write all path for the configfile
 		 * Make sure, you use the right linkedHashmap from the YamlManager
@@ -178,20 +179,21 @@ public class YamlHandler
 		if(!commands.exists()) 
 		{
 			MyHomeRules.log.info("Create commands.yml...");
-			try
+			try(InputStream in = plugin.getResource("default.yml"))
 			{
 				//Erstellung einer "leere" config.yml
-				FileUtils.copyToFile(plugin.getResource("default.yml"), commands);
+				Files.copy(in, commands.toPath());
 			} catch (IOException e)
 			{
 				e.printStackTrace();
 			}
 		}
 		
-		if(!loadYamlTask(commands, com))
-		{
-			return false;
-		}
+		com = loadYamlTask(commands, com);
+        if(com == null)
+        {
+        	return false;
+        }
 		writeFile(commands, com, plugin.getYamlManager().getCommandsKey());
 		return true;
 	}
@@ -258,18 +260,19 @@ public class YamlHandler
 		if(!language.exists()) 
 		{
 			MyHomeRules.log.info("Create %lang%.yml...".replace("%lang%", languageString));
-			try
+			try(InputStream in = plugin.getResource("default.yml"))
 			{
-				FileUtils.copyToFile(plugin.getResource("default.yml"), language);
+				Files.copy(in, language.toPath());
 			} catch (IOException e)
 			{
 				e.printStackTrace();
 			}
 		}
-		if(!loadYamlTask(language, lang))
-		{
-			return false;
-		}
+		lang = loadYamlTask(language, lang);
+        if(lang == null)
+        {
+        	return false;
+        }
 		writeFile(language, lang, plugin.getYamlManager().getLanguageKey());
 		return true;
 	}
@@ -286,18 +289,19 @@ public class YamlHandler
 		if(!multipleSite.exists()) 
 		{
 			MyHomeRules.log.info("Create %lang%.yml...".replace("%lang%", languageString+"-mps"));
-			try
+			try(InputStream in = plugin.getResource("default.yml"))
 			{
-				FileUtils.copyToFile(plugin.getResource("default.yml"), multipleSite);
+				Files.copy(in, multipleSite.toPath());
 			} catch (IOException e)
 			{
 				e.printStackTrace();
 			}
 		}
-		if(!loadYamlTask(multipleSite, mps))
-		{
-			return false;
-		}
+		mps = loadYamlTask(multipleSite, mps);
+        if(mps == null)
+        {
+        	return false;
+        }
 		writeFile(multipleSite, mps, plugin.getYamlManager().getMultipleSiteKey());
 		return true;
 	}
@@ -314,18 +318,19 @@ public class YamlHandler
 		if(!rules.exists()) 
 		{
 			MyHomeRules.log.info("Create %lang%.yml...".replace("%lang%", languageString+"-rules"));
-			try
+			try(InputStream in = plugin.getResource("default.yml"))
 			{
-				FileUtils.copyToFile(plugin.getResource("default.yml"), rules);
+				Files.copy(in, rules.toPath());
 			} catch (IOException e)
 			{
 				e.printStackTrace();
 			}
 		}
-		if(!loadYamlTask(rules, rul))
-		{
-			return false;
-		}
+		rul = loadYamlTask(rules, rul);
+        if(rul == null)
+        {
+        	return false;
+        }
 		writeFile(rules, rul, plugin.getYamlManager().getRulesKey());
 		return true;
 	}

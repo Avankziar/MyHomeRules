@@ -1,4 +1,5 @@
 Future Featurs:
+- Bungee wie Spigot MysqlSetup connection und Reconnection treiber updaten, siehe Scc
   
 Build 5 ========================================================================================================================
 - +Eine seitenbasierte Ansicht für die Joinnachrichten, die per Configboolean eingeschaltet werden kann.

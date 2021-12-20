@@ -343,7 +343,7 @@ public class MyHomeRules extends JavaPlugin
 		{
 			srapi = new ServerRuleAPI(this);
             plugin.getServer().getServicesManager().register(
-            		main.java.me.avankziar.interfacehub.spigot.serverrules.ServerRules.class,
+            		main.java.me.avankziar.ifh.spigot.serverrules.ServerRules.class,
             		srapi,
             		this,
                     ServicePriority.Normal);
