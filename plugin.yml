@@ -1,5 +1,5 @@
 name: MyHomeRules
-main: main.java.me.avankziar.myhomerules.spigot.MyHomeRules
+main: main.java.me.avankziar.mhr.spigot.MyHomeRules
 version: 6
 author: Avankziar
 api-version: 1.18
