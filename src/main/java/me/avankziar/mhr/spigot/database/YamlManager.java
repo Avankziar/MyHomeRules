@@ -116,6 +116,12 @@ public class YamlManager
 	
 	public void initConfig() //INFO:Config
 	{
+		configKeys.put("useIFHAdministration"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				true}));
+		configKeys.put("IFHAdministrationPath"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"mhr"}));
 		configKeys.put("Language"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"ENG"}));
@@ -146,9 +152,6 @@ public class YamlManager
 		configKeys.put("Mysql.Password"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"not_0123456789"}));
-		configKeys.put("Mysql.TableNameI"
-				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				"MyHomeRulesPlayerData"}));
 		
 		configKeys.put("RunTaskTimer"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {

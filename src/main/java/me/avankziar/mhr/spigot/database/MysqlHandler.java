@@ -11,23 +11,69 @@ import main.java.me.avankziar.mhr.spigot.objects.RulePlayer;
 
 public class MysqlHandler
 {
+	public enum Type
+	{
+		PLAYERDATA("mhrPlayerData") //MyHomeRulesPlayerData
+		;
+		
+		private Type(String value)
+		{
+			this.value = value;
+		}
+		
+		private final String value;
+
+		public String getValue()
+		{
+			return value;
+		}
+	}
+	
+	public enum QueryType
+	{
+		INSERT, UPDATE, DELETE, READ;
+	}
+	
+	/*
+	 * Alle Mysql Reihen, welche durch den Betrieb aufkommen.
+	 */
+	public static long startRecordTime = System.currentTimeMillis();
+	public static int inserts = 0;
+	public static int updates = 0;
+	public static int deletes = 0;
+	public static int reads = 0;
+	
+	public static void addRows(QueryType type, int amount)
+	{
+		switch(type)
+		{
+		case DELETE:
+			deletes += amount;
+			break;
+		case INSERT:
+			inserts += amount;
+		case READ:
+			reads += amount;
+			break;
+		case UPDATE:
+			updates += amount;
+			break;
+		}
+	}
+	
+	public static void resetsRows()
+	{
+		inserts = 0;
+		updates = 0;
+		reads = 0;
+		deletes = 0;
+	}
+	
 	private MyHomeRules plugin;
-	public String tableNameI;
 	
 	public MysqlHandler(MyHomeRules plugin)
 	{
 		this.plugin = plugin;
-		loadMysqlHandler();
-	}
-	
-	public boolean loadMysqlHandler()
-	{
-		tableNameI = plugin.getYamlHandler().getConfig().getString("Mysql.TableNameI");
-		if(tableNameI == null)
-		{
-			return false;
-		}
-		return true;
 	}
 	
 	public boolean exist(String whereColumn, Object... object) 
@@ -39,7 +85,7 @@ public class MysqlHandler
 		{
 			try 
 			{			
-				String sql = "SELECT `id` FROM `" + plugin.getMysqlHandler().tableNameI 
+				String sql = "SELECT `id` FROM `" + Type.PLAYERDATA.getValue() 
 						+ "` WHERE "+whereColumn+" LIMIT 1";
 		        preparedStatement = conn.prepareStatement(sql);
 		        int i = 1;
@@ -90,7 +136,7 @@ public class MysqlHandler
 		if (conn != null) {
 			try 
 			{
-				String sql = "INSERT INTO `" + plugin.getMysqlHandler().tableNameI 
+				String sql = "INSERT INTO `" + Type.PLAYERDATA.getValue() 
 						+ "`(`player_uuid`, `player_name`, `datetime`, `revoked`, `deleted`) " 
 						+ "VALUES(?, ?, ?, ?, ?)";
 				preparedStatement = conn.prepareStatement(sql);
@@ -140,7 +186,7 @@ public class MysqlHandler
 		{
 			try 
 			{
-				String data = "UPDATE `" + plugin.getMysqlHandler().tableNameI
+				String data = "UPDATE `" + Type.PLAYERDATA.getValue()
 						+ "` SET `player_uuid` = ?, `player_name` = ?, `datetime` = ?, `revoked` = ?, `deleted` = ?" 
 						+ " WHERE "+whereColumn;
 				preparedStatement = conn.prepareStatement(data);
@@ -184,7 +230,7 @@ public class MysqlHandler
 		{
 			try 
 			{			
-				String sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameI 
+				String sql = "SELECT * FROM `" + Type.PLAYERDATA.getValue() 
 						+ "` WHERE "+whereColumn+" LIMIT 1";
 		        preparedStatement = conn.prepareStatement(sql);
 		        int i = 1;
@@ -234,7 +280,7 @@ public class MysqlHandler
 		Connection conn = plugin.getMysqlSetup().getConnection();
 		try 
 		{
-			String sql = "DELETE FROM `" + plugin.getMysqlHandler().tableNameI + "` WHERE "+whereColumn;
+			String sql = "DELETE FROM `" + Type.PLAYERDATA.getValue() + "` WHERE "+whereColumn;
 			preparedStatement = conn.prepareStatement(sql);
 			int i = 1;
 	        for(Object o : whereObject)
@@ -270,7 +316,7 @@ public class MysqlHandler
 		{
 			try 
 			{			
-				String sql = "SELECT `id` FROM `" + plugin.getMysqlHandler().tableNameI + "` ORDER BY `id` DESC LIMIT 1";
+				String sql = "SELECT `id` FROM `" + Type.PLAYERDATA.getValue() + "` ORDER BY `id` DESC LIMIT 1";
 		        preparedStatement = conn.prepareStatement(sql);
 		        
 		        result = preparedStatement.executeQuery();
@@ -312,7 +358,7 @@ public class MysqlHandler
 		{
 			try 
 			{			
-				String sql = "SELECT `id` FROM `" + plugin.getMysqlHandler().tableNameI
+				String sql = "SELECT `id` FROM `" + Type.PLAYERDATA.getValue()
 						+ "` WHERE "+whereColumn
 						+ " ORDER BY `id` DESC";
 		        preparedStatement = conn.prepareStatement(sql);
@@ -364,7 +410,7 @@ public class MysqlHandler
 		{
 			try 
 			{			
-				String sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameI
+				String sql = "SELECT * FROM `" + Type.PLAYERDATA.getValue()
 						+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" DESC LIMIT "+start+", "+end;
 		        preparedStatement = conn.prepareStatement(sql);
 		        int i = 1;
@@ -419,7 +465,7 @@ public class MysqlHandler
 		{
 			try 
 			{			
-				String sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameI 
+				String sql = "SELECT * FROM `" + Type.PLAYERDATA.getValue() 
 						+ "` ORDER BY "+orderByColumn+" DESC LIMIT "+start+", "+end;
 		        preparedStatement = conn.prepareStatement(sql);
 		        

@@ -14,10 +14,13 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import main.java.me.avankziar.ifh.spigot.administration.Administration;
 import main.java.me.avankziar.mhr.spigot.assistence.BackgroundTask;
 import main.java.me.avankziar.mhr.spigot.commands.RuleCommandExecutor;
 import main.java.me.avankziar.mhr.spigot.commands.RulesCommandExecutor;
@@ -66,6 +69,8 @@ public class MyHomeRules extends JavaPlugin
 	public static ArgumentConstructor ruleaccepting = null;
 	public static LinkedHashMap<String, String> map = new LinkedHashMap<>();
 	
+	private Administration administrationConsumer;
+	
 	public void onEnable()
 	{
 		plugin = this;
@@ -78,6 +83,8 @@ public class MyHomeRules extends JavaPlugin
 		log.info(" ██║╚██╔╝██║██╔══██║██╔══██╗ | Depend Plugins: "+plugin.getDescription().getDepend().toString());
 		log.info(" ██║ ╚═╝ ██║██║  ██║██║  ██║ | SoftDepend Plugins: "+plugin.getDescription().getSoftDepend().toString());
 		log.info(" ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝ | LoadBefore: "+plugin.getDescription().getLoadBefore().toString());
+		
+		setupIFHAdministration();
 		
 		commandTree = new ArrayList<>();
 		argumentMap = new LinkedHashMap<>();
@@ -315,11 +322,6 @@ public class MyHomeRules extends JavaPlugin
 		}
 		if(yamlHandler.getConfig().getBoolean("Mysql.Status", false))
 		{
-			mysqlSetup.closeConnection();
-			if(!mysqlHandler.loadMysqlHandler())
-			{
-				return false;
-			}
 			if(!mysqlSetup.loadMysqlSetup())
 			{
 				return false;
@@ -350,5 +352,47 @@ public class MyHomeRules extends JavaPlugin
             log.info(pluginName + " detected InterfaceHub. Hooking!");
             return;
         }
+	}
+	
+	private void setupIFHAdministration()
+	{ 
+		if(!plugin.getServer().getPluginManager().isPluginEnabled("InterfaceHub")) 
+	    {
+	    	return;
+	    }
+		new BukkitRunnable()
+        {
+        	int i = 0;
+			@Override
+			public void run()
+			{
+			    if(i == 20)
+			    {
+				cancel();
+				return;
+			    }
+			    try
+			    {
+			    	RegisteredServiceProvider<main.java.me.avankziar.ifh.spigot.administration.Administration> rsp = 
+	                         getServer().getServicesManager().getRegistration(Administration.class);
+				    if (rsp == null) 
+				    {
+				    	i++;
+				        return;
+				    }
+				    administrationConsumer = rsp.getProvider();
+				    log.info(pluginName + " detected InterfaceHub >>> Administration.class is consumed!");
+			    } catch(NoClassDefFoundError e) 
+			    {
+			    	cancel();
+			    }		    
+			    cancel();
+			}
+        }.runTaskTimer(plugin,  0L, 20*2);
+	}
+	
+	public Administration getAdministration()
+	{
+		return administrationConsumer;
 	}
 }

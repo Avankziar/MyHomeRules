@@ -1,6 +1,12 @@
 Future Featurs:
 - Bungee wie Spigot MysqlSetup connection und Reconnection treiber updaten, siehe Scc
 
+Build 6-2-0
+- MC 1.19.2 support+
+- IFH Administration implementiert
+- MysqlSetup aktualisiert
+- Tabellen name MyHomeRulesPlayerData in mhrPlayerData geändert. Bitte bei euch auch ändern.
+
 Build 6-1-x ================================================================================================================
 + MC 1.19 support
 

@@ -80,6 +80,7 @@ public class YamlHandler
 		return yaml;
 	}
 	
+	@SuppressWarnings("deprecation")
 	private boolean writeFile(File file, YamlConfiguration yml, LinkedHashMap<String, Language> keyMap)
 	{
 		yml.options().header("For more explanation see \nhttps://www.spigotmc.org/resources/my-home-rules.79165/");
@@ -171,7 +172,9 @@ public class YamlHandler
 		/*
 		 * Define the language
 		 */
-		languages = cfg.getString("Language", "ENG").toUpperCase();
+		languages = plugin.getAdministration() == null 
+				? cfg.getString("Language", "ENG").toUpperCase() 
+				: plugin.getAdministration().getLanguage();
 		/*
 		 * Repeat for all other single flatfiles.
 		 */
