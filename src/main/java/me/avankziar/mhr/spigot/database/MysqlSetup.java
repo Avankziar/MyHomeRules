@@ -29,7 +29,10 @@ public class MysqlSetup
 		{
 			adm = false;
 		}
-		
+		if(adm)
+		{
+			MyHomeRules.log.log(Level.INFO, "Using IFH Administration");
+		}
 		host = adm ? plugin.getAdministration().getHost(path)
 				: plugin.getYamlHandler().getConfig().getString("Mysql.Host");
 		port = adm ? plugin.getAdministration().getPort(path)
@@ -131,15 +134,35 @@ public class MysqlSetup
 	
 	private boolean baseSetup(String data) 
 	{
-		try (Connection conn = getConnection(); PreparedStatement query = conn.prepareStatement(data))
+		if (conn != null) 
 		{
-			query.execute();
-		} catch (SQLException e) 
-		{
-			MyHomeRules.log.log(Level.WARNING, "Could not build data source. Or connection is null", e);
+			PreparedStatement query = null;
+		    try 
+		    {
+		    	query = conn.prepareStatement(data);
+		    	query.execute();
+		    } catch (SQLException e) 
+		    {
+		    	e.printStackTrace();
+		    	MyHomeRules.log.severe("Error creating tables! Error: " + e.getMessage());
+		    	return false;
+		    } finally 
+		    {
+		    	try 
+		    	{
+		    		if (query != null) 
+		    		{
+		    			query.close();
+		    		}
+		    	} catch (Exception e) 
+		    	{
+		    		e.printStackTrace();
+		    		return false;
+		    	}
+		    }
 		}
 		return true;
-	}	
+	}
 	
 	public boolean loadMysqlSetup()
 	{
