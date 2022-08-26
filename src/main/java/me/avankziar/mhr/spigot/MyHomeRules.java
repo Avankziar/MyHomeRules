@@ -362,14 +362,18 @@ public class MyHomeRules extends JavaPlugin
 	    {
 	    	return;
 	    }
-		RegisteredServiceProvider<main.java.me.avankziar.ifh.spigot.administration.Administration> rsp = 
-                getServer().getServicesManager().getRegistration(Administration.class);
-	    if (rsp == null) 
+		try
 	    {
-	        return;
-	    }
-	    administrationConsumer = rsp.getProvider();
-	    log.info(pluginName + " detected InterfaceHub >>> Administration.class is consumed!");
+	    	RegisteredServiceProvider<main.java.me.avankziar.ifh.spigot.administration.Administration> rsp = 
+                     getServer().getServicesManager().getRegistration(Administration.class);
+		    if (rsp == null) 
+		    {
+		        return;
+		    }
+		    administrationConsumer = rsp.getProvider();
+		    log.info(pluginName + " detected InterfaceHub >>> Administration.class is consumed!");
+	    } catch(NoClassDefFoundError e) 
+	    {}
 	}
 	
 	public Administration getAdministration()
