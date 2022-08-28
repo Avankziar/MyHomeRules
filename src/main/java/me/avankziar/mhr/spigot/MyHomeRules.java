@@ -92,11 +92,13 @@ public class MyHomeRules extends JavaPlugin
 		yamlHandler = new YamlHandler(this);
 		
 		String path = plugin.getYamlHandler().getConfig().getString("IFHAdministrationPath");
-		boolean check = plugin.getAdministration() != null && plugin.getAdministration().getHost(path) != null;
-		if(check || yamlHandler.getConfig().getBoolean("Mysql.Status", false) == true)
+		boolean adm = plugin.getAdministration() != null 
+				&& plugin.getYamlHandler().getConfig().getBoolean("useIFHAdministration")
+				&& plugin.getAdministration().isMysqlPathActive(path);
+		if(adm || yamlHandler.getConfig().getBoolean("Mysql.Status", false) == true)
 		{
 			mysqlHandler = new MysqlHandler(this);
-			mysqlSetup = new MysqlSetup(this);
+			mysqlSetup = new MysqlSetup(this, adm, path);
 		} else
 		{
 			log.severe("MySQL is not set in the Plugin " + pluginName + "!");

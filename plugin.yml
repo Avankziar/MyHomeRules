@@ -2,7 +2,7 @@ name: MyHomeRules
 main: main.java.me.avankziar.mhr.spigot.MyHomeRules
 version: 6
 author: Avankziar
-api-version: 1.19
+api-version: 1.17
 description: A Rules accepting Plugin
 website: https://www.spigotmc.org/resources/my-home-rules.79165/
 softdepend: [InterfaceHub]

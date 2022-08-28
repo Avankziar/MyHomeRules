@@ -21,14 +21,8 @@ public class MysqlSetup
 	final private boolean isVerifyServerCertificate;
 	final private boolean isSSLEnabled;
 	
-	public MysqlSetup(MyHomeRules plugin) 
+	public MysqlSetup(MyHomeRules plugin, boolean adm, String path) 
 	{
-		boolean adm = plugin.getYamlHandler().getConfig().getBoolean("useIFHAdministration", false);
-		String path = plugin.getYamlHandler().getConfig().getString("IFHAdministrationPath");
-		if(plugin.getAdministration() == null || plugin.getAdministration().getHost(path) == null)
-		{
-			adm = false;
-		}
 		if(adm)
 		{
 			MyHomeRules.log.log(Level.INFO, "Using IFH Administration");
