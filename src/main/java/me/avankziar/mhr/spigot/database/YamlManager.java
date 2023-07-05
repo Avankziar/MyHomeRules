@@ -476,31 +476,31 @@ public class YamlManager
 	}
 	public void initMultipleSite() //INFO:MultipleSite
 	{
-		multipleSiteKeys.put("1.Message",
+		multipleSiteKeys.put("0.Message",
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"§d======§c======§e======§7[§bMyHome&4Rules§7]§e======§c======§d======",
 						"§bUm ein angenehmes Klima auf dem Server zu ermöglichen,",
-						"§bmüssen gewisse Regeln eingehalten werden. §c/regeln~click@RUN_COMMAND@/rules~hover@SHOW_TEXT@1.Hover.Message.LineThree",
-						"§bDie DSGVO Richtlinien findest du unter §c/dsgvolink~click@RUN_COMMAND@/dsgvolink~hover@SHOW_TEXT@1.Hover.Message.LineTwo",
-						"§bNeuigkeiten und Nachrichten kannst du per §c/forum~click@RUN_COMMAND@/forum~hover@SHOW_TEXT@1.Hover.Message.LineFour §bnachlesen.",
+						"§bmüssen gewisse Regeln eingehalten werden. §c/regeln~click@RUN_COMMAND@/rules~hover@SHOW_TEXT@0.Hover.Message.LineThree",
+						"§bDie DSGVO Richtlinien findest du unter §c/dsgvolink~click@RUN_COMMAND@/dsgvolink~hover@SHOW_TEXT@0.Hover.Message.LineTwo",
+						"§bNeuigkeiten und Nachrichten kannst du per §c/forum~click@RUN_COMMAND@/forum~hover@SHOW_TEXT@0.Hover.Message.LineFour §bnachlesen.",
 						"§2-----------------------------------------------------",
 						"§0.",
-						"§6=====§2Klick §2hier§6======>>> §4§l§o/dsgvo~click@RUN_COMMAND@/dsgvo~hover@SHOW_TEXT@1.Hover.Message.LineSix §6<<<======§2Klick §2hier§6=====",
+						"§6=====§2Klick §2hier§6======>>> §4§l§o/dsgvo~click@RUN_COMMAND@/dsgvo~hover@SHOW_TEXT@0.Hover.Message.LineSix §6<<<======§2Klick §2hier§6=====",
 						"§0.",
 						"§2-----------------------------------------------------",
-						"§enächste+Seite+=>~click@RUN_COMMAND@/rules+site+2~hover@SHOW_TEXT@1.Hover.Command.Next",
+						"§enächste+Seite+=>~click@RUN_COMMAND@/rules+site+2~hover@SHOW_TEXT@0.Hover.Command.Next",
 						
 						"§d======§c======§e======§7[§bMyHome&4Rules§7]§e======§c======§d======",
 						"§bTo enable a pleasant climate on the server,",
-						"§bcertain rules must be observed. §c/regeln~click@RUN_COMMAND@/rules~hover@SHOW_TEXT@1.Hover.Message.LineThree",
-						"§bThe DSGVO guidelines can be found at §c/dsgvolink~click@RUN_COMMAND@/dsgvolink~hover@1.SHOW_TEXT@Hover.Message.LineTwo",
-						"§bYou can get news and updates via §c/forum~click@RUN_COMMAND@/forum~hover@SHOW_TEXT@1.Hover.Message.LineFour §b.",
-						"§2-----------------------------------------------------",
+						"§bcertain rules must be observed. §c/regeln~click@RUN_COMMAND@/rules~hover@SHOW_TEXT@0.Hover.Message.LineThree",
+						"§bThe DSGVO guidelines can be found at §c/dsgvolink~click@RUN_COMMAND@/dsgvolink~hover@0.SHOW_TEXT@Hover.Message.LineTwo",
+						"§bYou can get news and updates via §c/forum~click@RUN_COMMAND@/forum~hover@SHOW_TEXT@0.Hover.Message.LineFour §b.",
+						"§2-----------------------------------------------------"+
 						" ",
-						"§6=====§2Click §2here§6======>>> §4§l§o/dsgvo~click@RUN_COMMAND@/dsgvo~hover@SHOW_TEXT@1.Hover.Message.LineSix §6<<<======§2Click §2here§6=====",
+						"§6=====§2Click §2here§6======>>> §4§l§o/dsgvo~click@RUN_COMMAND@/dsgvo~hover@SHOW_TEXT@0.Hover.Message.LineSix §6<<<======§2Click §2here§6=====",
 						" ",
 						"§2-----------------------------------------------------",
-						"§enext+site+=>~click@RUN_COMMAND@/rules+site+2~hover@SHOW_TEXT@1.Hover.Command.Next"}));
+						"§enext+site+=>~click@RUN_COMMAND@/rules+site+2~hover@SHOW_TEXT@0.Hover.Command.Next"}));
 		multipleSiteKeys.put("1.Hover.Message.LineTwo",
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&eKlicke hier um den Befehl &c/dsgvolink &edirekt auszuführen.~!~&eDieses leitet dich dann zu den DSGVO Richtlinien weiter.",
