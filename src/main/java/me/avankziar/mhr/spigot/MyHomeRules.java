@@ -19,7 +19,6 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import main.java.me.avankziar.ifh.spigot.administration.Administration;
 import main.java.me.avankziar.mhr.spigot.assistence.BackgroundTask;
 import main.java.me.avankziar.mhr.spigot.commands.RuleCommandExecutor;
 import main.java.me.avankziar.mhr.spigot.commands.RulesCommandExecutor;
@@ -41,6 +40,7 @@ import main.java.me.avankziar.mhr.spigot.database.YamlManager;
 import main.java.me.avankziar.mhr.spigot.interfacehub.ServerRuleAPI;
 import main.java.me.avankziar.mhr.spigot.listener.PlayerListener;
 import main.java.me.avankziar.mhr.spigot.metrics.Metrics;
+import me.avankziar.ifh.spigot.administration.Administration;
 
 public class MyHomeRules extends JavaPlugin
 {
@@ -349,7 +349,7 @@ public class MyHomeRules extends JavaPlugin
 		{
 			srapi = new ServerRuleAPI(this);
             plugin.getServer().getServicesManager().register(
-            		main.java.me.avankziar.ifh.spigot.serverrules.ServerRules.class,
+            		me.avankziar.ifh.spigot.serverrules.ServerRules.class,
             		srapi,
             		this,
                     ServicePriority.Normal);
@@ -366,7 +366,7 @@ public class MyHomeRules extends JavaPlugin
 	    }
 		try
 	    {
-	    	RegisteredServiceProvider<main.java.me.avankziar.ifh.spigot.administration.Administration> rsp = 
+	    	RegisteredServiceProvider<me.avankziar.ifh.spigot.administration.Administration> rsp = 
                      getServer().getServicesManager().getRegistration(Administration.class);
 		    if (rsp == null) 
 		    {

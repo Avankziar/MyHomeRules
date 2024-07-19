@@ -9,10 +9,10 @@ import java.util.List;
 
 import org.bukkit.OfflinePlayer;
 
-import main.java.me.avankziar.ifh.spigot.serverrules.ServerRule;
-import main.java.me.avankziar.ifh.spigot.serverrules.ServerRules;
 import main.java.me.avankziar.mhr.spigot.MyHomeRules;
 import main.java.me.avankziar.mhr.spigot.objects.RulePlayer;
+import me.avankziar.ifh.spigot.serverrules.ServerRule;
+import me.avankziar.ifh.spigot.serverrules.ServerRules;
 
 public class ServerRuleAPI implements ServerRules
 {
